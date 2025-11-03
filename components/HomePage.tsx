@@ -25,13 +25,13 @@ export default function HomePage() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-16">
+        <section className="bg-gradient-to-r from-primary-light via-primary to-primary-accent text-white py-16 md:py-20">
           <div className="container mx-auto px-4 text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
             >
               Aprende a dibujar fácil y paso a paso
             </motion.h1>
@@ -39,7 +39,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-primary-50 max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto"
             >
               Descubre cientos de tutoriales de dibujo gratuitos organizados por categorías
             </motion.p>
@@ -77,13 +77,13 @@ export default function HomePage() {
         </section>
 
         {/* All Categories Section */}
-        <section className="bg-gray-50 dark:bg-gray-800 py-12">
+        <section className="bg-gray-light dark:bg-gray-800 py-12">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-3">
+              <h2 className="text-3xl font-bold text-dark dark:text-gray-200 mb-3">
                 Todas las Categorías
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
+              <p className="text-dark-light dark:text-gray-400 text-lg">
                 Elige una categoría y comienza a dibujar
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function HomePage() {
         </section>
 
         {/* Newsletter Section */}
-        <section className="bg-gradient-to-r from-primary-500 to-primary-600 py-16">
+        <section className="bg-gradient-to-r from-primary-light via-primary to-primary-accent py-16">
           <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -176,19 +176,19 @@ export default function HomePage() {
               <h2 className="text-3xl font-bold text-white mb-4">
                 Recibe nuevos tutoriales cada semana
               </h2>
-              <p className="text-primary-50 mb-8">
+              <p className="text-white/90 mb-8 text-lg">
                 Suscríbete a nuestro boletín y no te pierdas ningún tutorial
               </p>
               <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input
                   type="email"
                   placeholder="Tu correo electrónico"
-                  className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white dark:bg-gray-800 dark:text-white"
+                  className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white text-dark"
                   required
                 />
                 <button
                   type="submit"
-                  className="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-colors"
+                  className="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl"
                 >
                   Suscribirse
                 </button>

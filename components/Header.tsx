@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiSearch, FiHeart, FiSun, FiMoon } from 'react-icons/fi';
@@ -26,9 +27,22 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-3">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400 }}
+              className="relative w-12 h-12 flex-shrink-0"
+            >
+              <Image
+                src="/logo.svg"
+                alt="DibuBaron Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </motion.div>
             <motion.h1
-              className="text-3xl font-bold text-primary"
+              className="text-2xl md:text-3xl font-bold text-primary"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400 }}
             >
