@@ -23,42 +23,42 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
   ];
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50 transition-colors">
+    <header className="bg-gradient-to-r from-fun-yellow/20 via-fun-pink/20 to-fun-purple/20 dark:bg-gray-900 shadow-xl sticky top-0 z-50 transition-colors border-b-4 border-primary">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 group">
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400 }}
-              className="relative w-12 h-12 flex-shrink-0"
+              className="relative w-14 h-14 flex-shrink-0"
             >
               <Image
                 src="/logo.svg"
                 alt="DibuBaron Logo"
                 fill
-                className="object-contain"
+                className="object-contain drop-shadow-lg"
                 priority
               />
             </motion.div>
             <motion.h1
-              className="text-2xl md:text-3xl font-bold text-primary"
+              className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-primary via-fun-pink to-fun-purple bg-clip-text text-transparent"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400 }}
             >
-              DibuBaron
+              DibuBaron 🎨
             </motion.h1>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400 transition-colors flex items-center gap-2"
+                className="px-4 py-2 rounded-2xl font-bold text-primary hover:bg-fun-yellow hover:scale-105 transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
               >
-                {item.icon && <item.icon />}
+                {item.icon && <item.icon className="text-lg" />}
                 {item.label}
               </Link>
             ))}

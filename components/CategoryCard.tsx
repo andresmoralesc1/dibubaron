@@ -27,29 +27,44 @@ export default function CategoryCard({ id, title, image, slug, count }: Category
     }
   };
 
+  const colors = [
+    'border-fun-yellow',
+    'border-fun-orange',
+    'border-fun-pink',
+    'border-fun-purple',
+    'border-fun-green',
+    'border-primary',
+  ];
+
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -5 }}
-      className="group block bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden relative"
+      whileHover={{ y: -8, rotate: Math.random() > 0.5 ? 2 : -2 }}
+      className={`group block bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden relative border-4 ${randomColor}`}
     >
       <Link href={`/categoria/${slug}`}>
-        <div className="relative h-48 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-900 dark:to-primary-800">
+        <div className="relative h-48 bg-gradient-to-br from-primary-100 via-fun-yellow/20 to-fun-pink/20 dark:from-primary-900 dark:to-primary-800">
           <Image
             src={image}
             alt={title}
             fill
-            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-300"
           />
+
+          {/* Efecto de brillo */}
+          <div className="absolute inset-0 bg-gradient-to-t from-white/0 to-white/20" />
         </div>
-        <div className="p-4">
-          <h3 className="font-bold text-lg text-gray-800 dark:text-gray-200 group-hover:text-primary transition-colors">
+        <div className="p-5 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+          <h3 className="font-extrabold text-xl text-primary dark:text-primary-accent group-hover:scale-105 transition-transform inline-block">
             {title}
           </h3>
           {count && (
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-dark-light dark:text-gray-400 mt-2 font-semibold flex items-center gap-1">
+              <span className="text-lg">✨</span>
               {count} dibujos
             </p>
           )}
@@ -58,17 +73,20 @@ export default function CategoryCard({ id, title, image, slug, count }: Category
 
       {/* Favorite Button */}
       <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.15, rotate: 10 }}
+        whileTap={{ scale: 0.85 }}
         onClick={handleFavoriteClick}
-        className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-sm transition-colors ${
+        className={`absolute top-4 right-4 p-3 rounded-full shadow-lg backdrop-blur-sm transition-all ${
           favorite
-            ? 'bg-red-500 text-white'
-            : 'bg-white/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300'
+            ? 'bg-fun-red text-white scale-110'
+            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'
         }`}
       >
-        <FiHeart className={`w-5 h-5 ${favorite ? 'fill-current' : ''}`} />
+        <FiHeart className={`w-6 h-6 ${favorite ? 'fill-current' : ''}`} />
       </motion.button>
+
+      {/* Decoración esquina */}
+      <div className="absolute top-0 left-0 w-0 h-0 border-t-[40px] border-t-fun-yellow/30 border-r-[40px] border-r-transparent" />
     </motion.div>
   );
 }

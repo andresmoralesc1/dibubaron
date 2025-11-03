@@ -26,6 +26,15 @@ const config: Config = {
           800: '#012E4C',
           900: '#001726',
         },
+        // Colores vibrantes para niños
+        fun: {
+          yellow: '#FFD93D',
+          orange: '#FF8C42',
+          pink: '#FF6BCB',
+          purple: '#9D4EDD',
+          green: '#06D6A0',
+          red: '#EF476F',
+        },
         dark: {
           DEFAULT: '#3a3a3a',
           light: '#4b4f58',
@@ -35,6 +44,14 @@ const config: Config = {
           light: '#f5f5f5',
           border: '#e5e5e5',
         },
+      },
+      borderRadius: {
+        'xl': '1rem',
+        '2xl': '1.5rem',
+        '3xl': '2rem',
+      },
+      fontFamily: {
+        'fun': ['Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'cursive'],
       },
     },
   },

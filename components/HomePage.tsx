@@ -25,40 +25,81 @@ export default function HomePage() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-primary-light via-primary to-primary-accent text-white py-16 md:py-20">
-          <div className="container mx-auto px-4 text-center">
+        <section className="relative bg-gradient-to-br from-fun-yellow via-fun-orange to-fun-pink text-white py-16 md:py-20 overflow-hidden">
+          {/* Elementos decorativos flotantes */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.div
+              animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="absolute top-10 left-10 w-16 h-16 bg-white/20 rounded-full"
+            />
+            <motion.div
+              animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
+              className="absolute top-20 right-20 w-12 h-12 bg-white/20 rounded-full"
+            />
+            <motion.div
+              animate={{ y: [0, -15, 0], x: [0, 10, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
+              className="absolute bottom-20 left-1/4 w-20 h-20 bg-white/15 rounded-full"
+            />
+            <motion.div
+              animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
+              transition={{ duration: 4.5, repeat: Infinity, delay: 1.5 }}
+              className="absolute bottom-10 right-1/3 w-14 h-14 bg-white/15 rounded-full"
+            />
+          </div>
+
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.8 }}
+              className="mb-6"
+            >
+              <span className="text-6xl md:text-8xl">🎨</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 drop-shadow-lg"
+              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}
             >
-              Aprende a dibujar fácil y paso a paso
+              ¡Aprende a dibujar! 🖍️
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-white font-semibold max-w-3xl mx-auto drop-shadow-md"
             >
-              Descubre cientos de tutoriales de dibujo gratuitos organizados por categorías
+              Dibuja tus personajes favoritos paso a paso ✨
             </motion.p>
           </div>
         </section>
 
         {/* Popular Categories Section */}
-        <section className="container mx-auto px-4 py-12">
+        <section className="container mx-auto px-4 py-12 bg-gradient-to-b from-white to-fun-yellow/10">
           <div className="text-center mb-12">
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              className="mb-4"
+            >
+              <span className="text-5xl">⭐</span>
+            </motion.div>
             <motion.h2
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-3"
+              className="text-3xl md:text-4xl font-extrabold text-primary mb-3"
             >
-              Categorías Más Populares
+              ¡Los Más Dibujados! 🌟
             </motion.h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              Los dibujos favoritos de nuestra comunidad
+            <p className="text-dark-light text-lg font-medium">
+              Estos son los favoritos de todos los niños
             </p>
           </div>
 
@@ -165,32 +206,51 @@ export default function HomePage() {
         </section>
 
         {/* Newsletter Section */}
-        <section className="bg-gradient-to-r from-primary-light via-primary to-primary-accent py-16">
-          <div className="container mx-auto px-4 text-center">
+        <section className="relative bg-gradient-to-r from-fun-purple via-fun-pink to-fun-red py-16 overflow-hidden">
+          {/* Decoraciones */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              className="absolute top-10 left-10 text-6xl opacity-20"
+            >
+              ✏️
+            </motion.span>
+            <motion.span
+              animate={{ rotate: -360 }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+              className="absolute bottom-10 right-10 text-6xl opacity-20"
+            >
+              🖍️
+            </motion.span>
+          </div>
+
+          <div className="container mx-auto px-4 text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="max-w-2xl mx-auto"
             >
-              <h2 className="text-3xl font-bold text-white mb-4">
-                Recibe nuevos tutoriales cada semana
+              <span className="text-5xl mb-4 inline-block">📧</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4 drop-shadow-lg">
+                ¡Nuevos Dibujos Cada Semana! 🎉
               </h2>
-              <p className="text-white/90 mb-8 text-lg">
-                Suscríbete a nuestro boletín y no te pierdas ningún tutorial
+              <p className="text-white font-semibold mb-8 text-lg drop-shadow-md">
+                Suscríbete y recibe ideas súper divertidas
               </p>
               <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input
                   type="email"
                   placeholder="Tu correo electrónico"
-                  className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white text-dark"
+                  className="flex-1 px-5 py-4 rounded-2xl focus:outline-none focus:ring-4 focus:ring-white/50 text-dark font-medium shadow-xl"
                   required
                 />
                 <button
                   type="submit"
-                  className="bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl"
+                  className="bg-white text-fun-purple px-8 py-4 rounded-2xl font-bold hover:bg-fun-yellow hover:scale-105 transition-all shadow-xl hover:shadow-2xl"
                 >
-                  Suscribirse
+                  ¡Suscribirme! 🚀
                 </button>
               </form>
             </motion.div>
