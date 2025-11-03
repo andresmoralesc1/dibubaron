@@ -2,8 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FiHeart, FiEye } from 'react-icons/fi';
-import { useFavorites } from '@/lib/contexts';
+import { FiEye } from 'react-icons/fi';
 import type { Drawing } from '@/lib/drawings';
 
 interface DrawingCardProps {
@@ -11,17 +10,6 @@ interface DrawingCardProps {
 }
 
 export default function DrawingCard({ drawing }: DrawingCardProps) {
-  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-  const favorite = isFavorite(drawing.id);
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (favorite) {
-      removeFavorite(drawing.id);
-    } else {
-      addFavorite(drawing.id);
-    }
-  };
 
   const difficultyColors = {
     facil: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
@@ -56,20 +44,6 @@ export default function DrawingCard({ drawing }: DrawingCardProps) {
             {difficultyLabels[drawing.difficulty]}
           </span>
         </div>
-
-        {/* Favorite Button */}
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={handleFavoriteClick}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-sm transition-colors ${
-            favorite
-              ? 'bg-red-500 text-white'
-              : 'bg-white/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300'
-          }`}
-        >
-          <FiHeart className={`w-5 h-5 ${favorite ? 'fill-current' : ''}`} />
-        </motion.button>
       </div>
 
       <div className="p-4">

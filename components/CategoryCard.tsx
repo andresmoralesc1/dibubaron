@@ -3,8 +3,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FiHeart } from 'react-icons/fi';
-import { useFavorites } from '@/lib/contexts';
 
 interface CategoryCardProps {
   id: string;
@@ -15,17 +13,6 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ id, title, image, slug, count }: CategoryCardProps) {
-  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-  const favorite = isFavorite(id);
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (favorite) {
-      removeFavorite(id);
-    } else {
-      addFavorite(id);
-    }
-  };
 
   const colors = [
     'border-fun-yellow',
@@ -70,20 +57,6 @@ export default function CategoryCard({ id, title, image, slug, count }: Category
           )}
         </div>
       </Link>
-
-      {/* Favorite Button */}
-      <motion.button
-        whileHover={{ scale: 1.15, rotate: 10 }}
-        whileTap={{ scale: 0.85 }}
-        onClick={handleFavoriteClick}
-        className={`absolute top-4 right-4 p-3 rounded-full shadow-lg backdrop-blur-sm transition-all ${
-          favorite
-            ? 'bg-fun-red text-white scale-110'
-            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300'
-        }`}
-      >
-        <FiHeart className={`w-6 h-6 ${favorite ? 'fill-current' : ''}`} />
-      </motion.button>
 
       {/* Decoración esquina */}
       <div className="absolute top-0 left-0 w-0 h-0 border-t-[40px] border-t-fun-yellow/30 border-r-[40px] border-r-transparent" />

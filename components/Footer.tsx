@@ -21,11 +21,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/favoritos" className="text-dark dark:text-gray-400 hover:text-primary-accent transition-colors">
-                  Favoritos
-                </Link>
-              </li>
-              <li>
                 <Link href="/nosotros" className="text-dark dark:text-gray-400 hover:text-primary-accent transition-colors">
                   Nosotros
                 </Link>
