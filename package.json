@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
+    "axios": "^1.13.1",
     "framer-motion": "^12.23.24",
     "next": "14.2.33",
     "react": "^18",
