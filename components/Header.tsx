@@ -18,6 +18,7 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
   const navItems = [
     { href: '/', label: 'Inicio' },
     { href: '/categorias', label: 'Categorías' },
+    { href: '/tienda', label: 'Tienda 🛒' },
     { href: '/nosotros', label: 'Nosotros' },
   ];
 
