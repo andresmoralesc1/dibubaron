@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FiShoppingCart, FiClock, FiAward, FiTrendingUp } from 'react-icons/fi';
-import { playClickSound, playSuccessSound } from '@/lib/sounds';
+import { playSuccessSound } from '@/lib/sounds';
 import { fireBigConfetti } from '@/lib/confetti';
 import { viewProduct } from '@/lib/gamification';
 

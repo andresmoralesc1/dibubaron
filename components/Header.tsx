@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiSearch, FiHeart, FiSun, FiMoon } from 'react-icons/fi';
+import { FiMenu, FiX, FiSearch, FiSun, FiMoon } from 'react-icons/fi';
 import { playClickSound, playWhooshSound } from '@/lib/sounds';
 
 interface HeaderProps {
@@ -74,7 +74,6 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
                 href={item.href}
                 className="px-6 py-3 rounded-full font-extrabold text-lg text-primary hover:bg-fun-yellow hover:scale-110 transition-all flex items-center gap-2 shadow-kid hover:shadow-kid-hover hover:translate-y-1"
               >
-                {item.icon && <item.icon className="text-lg" />}
                 {item.label}
               </Link>
             ))}
@@ -141,7 +140,6 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400 transition-colors py-2 flex items-center gap-2 text-lg"
                   >
-                    {item.icon && <item.icon />}
                     {item.label}
                   </Link>
                 </motion.div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
 import Breadcrumbs from './Breadcrumbs';
-import { FiFilter, FiX, FiShoppingBag, FiPackage } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 
 interface Product {
   id: number;

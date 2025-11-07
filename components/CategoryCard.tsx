@@ -15,7 +15,7 @@ interface CategoryCardProps {
   count?: number;
 }
 
-export default function CategoryCard({ id, title, image, slug, count }: CategoryCardProps) {
+export default function CategoryCard({ title, image, slug, count }: CategoryCardProps) {
 
   const colors = [
     'border-fun-yellow',

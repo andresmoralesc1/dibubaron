@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Achievement } from '@/lib/gamification';
 import { playSuccessSound } from '@/lib/sounds';
@@ -13,6 +13,11 @@ interface AchievementUnlockedProps {
 
 export default function AchievementUnlocked({ achievement, onClose }: AchievementUnlockedProps) {
   const [isVisible, setIsVisible] = useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(onClose, 300);
+  }, [onClose]);
 
   useEffect(() => {
     if (achievement) {
@@ -28,12 +33,7 @@ export default function AchievementUnlocked({ achievement, onClose }: Achievemen
 
       return () => clearTimeout(timer);
     }
-  }, [achievement]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(onClose, 300);
-  };
+  }, [achievement, handleClose]);
 
   if (!achievement) return null;
 

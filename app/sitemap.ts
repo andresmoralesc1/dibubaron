@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { categories } from '@/lib/categories';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.dibubaron.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dibubaron.com';
 
   const staticPages = [
     {
@@ -12,10 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/favoritos`,
+      url: `${baseUrl}/tienda`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
-      priority: 0.5,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/nosotros`,

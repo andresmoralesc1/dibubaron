@@ -5,7 +5,6 @@ import {
   getUserProgress,
   visitCategory,
   viewProduct,
-  getUnlockedAchievements,
   Achievement,
   ACHIEVEMENTS
 } from './gamification';

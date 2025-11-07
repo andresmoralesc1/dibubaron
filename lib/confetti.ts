@@ -27,7 +27,7 @@ export function fireBigConfetti() {
     colors: ['#FFD93D', '#FF9F1C', '#FF006E', '#C77DFF', '#06FFA5', '#4CC9F0'],
   };
 
-  function fire(particleRatio: number, opts: any) {
+  function fire(particleRatio: number, opts: Record<string, unknown>) {
     confetti({
       ...defaults,
       ...opts,
@@ -118,7 +118,7 @@ export function fireStars() {
     gravity: 0,
     decay: 0.94,
     startVelocity: 30,
-    shapes: ['star'],
+    shapes: ['star' as const],
     colors: ['#FFD93D', '#FF9F1C', '#FF006E', '#C77DFF'],
   };
 
@@ -140,10 +140,10 @@ export function fireStars() {
  */
 export function fireEmojiRain(emoji: string = '🎨') {
   const scalar = 2;
-  const shapes = confetti.shapeFromText({ text: emoji, scalar });
+  const shape = confetti.shapeFromText({ text: emoji, scalar });
 
   confetti({
-    shapes: shapes,
+    shapes: [shape],
     particleCount: 30,
     spread: 100,
     origin: { y: 0.3 },

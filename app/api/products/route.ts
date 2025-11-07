@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     const featured = searchParams.get('featured');
     const per_page = searchParams.get('per_page') || '50';
 
-    const params: any = {
+    const params: Record<string, string | number | boolean> = {
       per_page: parseInt(per_page),
       status: 'publish',
     };

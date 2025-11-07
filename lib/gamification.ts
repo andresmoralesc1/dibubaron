@@ -112,7 +112,7 @@ export function getUserProgress(): UserProgress {
     if (stored) {
       return JSON.parse(stored);
     }
-  } catch (error) {
+  } catch {
     console.log('Error loading progress');
   }
 
@@ -125,7 +125,7 @@ export function saveUserProgress(progress: UserProgress): void {
 
   try {
     localStorage.setItem('dibubaron_progress', JSON.stringify(progress));
-  } catch (error) {
+  } catch {
     console.log('Error saving progress');
   }
 }

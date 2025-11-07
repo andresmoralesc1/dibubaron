@@ -8,7 +8,8 @@ let audioContext: AudioContext | null = null;
 
 function getAudioContext(): AudioContext {
   if (!audioContext) {
-    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    audioContext = new AudioContextClass();
   }
   return audioContext;
 }
@@ -34,7 +35,7 @@ export function playClickSound() {
 
     oscillator.start(ctx.currentTime);
     oscillator.stop(ctx.currentTime + 0.1);
-  } catch (error) {
+  } catch {
     // Silenciar errores de audio
     console.log('Audio not available');
   }
@@ -64,7 +65,7 @@ export function playSuccessSound() {
       oscillator.start(ctx.currentTime + delay);
       oscillator.stop(ctx.currentTime + delay + 0.3);
     });
-  } catch (error) {
+  } catch {
     console.log('Audio not available');
   }
 }
@@ -88,7 +89,7 @@ export function playHoverSound() {
 
     oscillator.start(ctx.currentTime);
     oscillator.stop(ctx.currentTime + 0.05);
-  } catch (error) {
+  } catch {
     console.log('Audio not available');
   }
 }
@@ -114,7 +115,7 @@ export function playWhooshSound() {
 
     oscillator.start(ctx.currentTime);
     oscillator.stop(ctx.currentTime + 0.2);
-  } catch (error) {
+  } catch {
     console.log('Audio not available');
   }
 }
