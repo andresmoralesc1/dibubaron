@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fredoka } from "next/font/google";
 import "./globals.css";
 import { DarkModeProvider, FavoritesProvider } from '@/lib/contexts';
@@ -27,6 +27,18 @@ export const metadata: Metadata = {
     title: "DibuBaron - Aprende a dibujar fácil y paso a paso",
     description: "Descubre cientos de tutoriales de dibujo gratuitos organizados por categorías",
   },
+};
+
+// Viewport configuration para mobile
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FFD93D' },
+    { media: '(prefers-color-scheme: dark)', color: '#1F2937' },
+  ],
 };
 
 export default function RootLayout({
