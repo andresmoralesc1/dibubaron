@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FiShoppingCart, FiClock, FiAward, FiTrendingUp } from 'react-icons/fi';
+import { playClickSound, playSuccessSound } from '@/lib/sounds';
+import { fireBigConfetti } from '@/lib/confetti';
+import { viewProduct } from '@/lib/gamification';
 
 interface ProductCardProps {
   id: number;
@@ -53,12 +56,25 @@ export default function ProductCard({
 
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
+  const handleBuyClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    playSuccessSound();
+    fireBigConfetti();
+    viewProduct(); // Registrar vista de producto para gamificación
+
+    // Pequeño delay antes de abrir el link para que se vea la celebración
+    setTimeout(() => {
+      window.open(permalink, '_blank', 'noopener,noreferrer');
+    }, 300);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -12, scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
       className={`group relative bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-4 ${randomColor}`}
     >
       {/* Badge de destacado */}
@@ -134,15 +150,13 @@ export default function ProductCard({
             )}
           </div>
 
-          <a
-            href={permalink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group/btn bg-gradient-to-r from-primary to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-bold px-6 py-3 rounded-full transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl"
+          <button
+            onClick={handleBuyClick}
+            className="group/btn w-full bg-gradient-to-r from-fun-pink to-fun-purple hover:from-fun-purple hover:to-fun-pink text-white font-extrabold text-lg px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-kid hover:shadow-kid-hover hover:translate-y-1 active:translate-y-2 active:shadow-kid-active hover:scale-105 animate-pulse-color"
           >
-            <FiShoppingCart className="text-xl group-hover/btn:scale-110 transition-transform" />
-            Ver Curso
-          </a>
+            <FiShoppingCart className="text-2xl group-hover/btn:scale-125 group-hover/btn:rotate-12 transition-all" />
+            ¡Quiero este! 🌟
+          </button>
         </div>
       </div>
 

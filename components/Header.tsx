@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiSearch, FiHeart, FiSun, FiMoon } from 'react-icons/fi';
+import { playClickSound, playWhooshSound } from '@/lib/sounds';
 
 interface HeaderProps {
   onSearchClick?: () => void;
@@ -15,6 +16,21 @@ interface HeaderProps {
 export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const handleMenuClick = () => {
+    playWhooshSound();
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleSearchClick = () => {
+    playClickSound();
+    if (onSearchClick) onSearchClick();
+  };
+
+  const handleDarkModeToggle = () => {
+    playClickSound();
+    if (onToggleDarkMode) onToggleDarkMode();
+  };
+
   const navItems = [
     { href: '/', label: 'Inicio' },
     { href: '/categorias', label: 'Categorías' },
@@ -23,7 +39,7 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
   ];
 
   return (
-    <header className="bg-gradient-to-r from-fun-yellow/20 via-fun-pink/20 to-fun-purple/20 dark:bg-gray-900 shadow-xl sticky top-0 z-50 transition-colors border-b-4 border-primary">
+    <header className="bg-gradient-to-r from-fun-yellow/30 via-fun-pink/30 to-fun-purple/30 dark:bg-gray-900 shadow-2xl sticky top-0 z-50 transition-colors border-b-4 border-primary">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -56,7 +72,7 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-4 py-2 rounded-2xl font-bold text-primary hover:bg-fun-yellow hover:scale-105 transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
+                className="px-6 py-3 rounded-full font-extrabold text-lg text-primary hover:bg-fun-yellow hover:scale-110 transition-all flex items-center gap-2 shadow-kid hover:shadow-kid-hover hover:translate-y-1"
               >
                 {item.icon && <item.icon className="text-lg" />}
                 {item.label}
@@ -68,35 +84,35 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
           <div className="flex items-center gap-3">
             {/* Search Button */}
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onSearchClick}
+              whileHover={{ scale: 1.15, rotate: 10 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleSearchClick}
               className="p-2 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400 transition-colors"
               aria-label="Buscar"
             >
-              <FiSearch className="w-5 h-5" />
+              <FiSearch className="w-6 h-6" />
             </motion.button>
 
             {/* Dark Mode Toggle */}
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onToggleDarkMode}
+              whileHover={{ scale: 1.15, rotate: darkMode ? 180 : -180 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleDarkModeToggle}
               className="hidden md:block p-2 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400 transition-colors"
               aria-label="Toggle dark mode"
             >
-              {darkMode ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
+              {darkMode ? <FiSun className="w-6 h-6 animate-spin" style={{ animationDuration: '8s' }} /> : <FiMoon className="w-6 h-6" />}
             </motion.button>
 
             {/* Mobile Menu Button */}
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.9, rotate: 90 }}
+              onClick={handleMenuClick}
               className="md:hidden p-2 text-primary"
               aria-label="Menu"
             >
-              {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+              {mobileMenuOpen ? <FiX className="w-7 h-7" /> : <FiMenu className="w-7 h-7" />}
             </motion.button>
           </div>
         </div>

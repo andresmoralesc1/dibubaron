@@ -26,14 +26,16 @@ const config: Config = {
           800: '#012E4C',
           900: '#001726',
         },
-        // Colores vibrantes para niños
+        // Colores ultra vibrantes optimizados para niños
         fun: {
-          yellow: '#FFD93D',
-          orange: '#FF8C42',
-          pink: '#FF6BCB',
-          purple: '#9D4EDD',
-          green: '#06D6A0',
-          red: '#EF476F',
+          yellow: '#FFD93D',    // Amarillo brillante
+          orange: '#FF9F1C',    // Naranja más saturado
+          pink: '#FF006E',      // Rosa fucsia vibrante
+          purple: '#C77DFF',    // Morado más claro y alegre
+          green: '#06FFA5',     // Verde menta brillante
+          red: '#EF476F',       // Rojo coral
+          blue: '#4CC9F0',      // Azul cielo
+          lime: '#CCFF00',      // Lima neón
         },
         dark: {
           DEFAULT: '#3a3a3a',
@@ -49,9 +51,28 @@ const config: Config = {
         'xl': '1rem',
         '2xl': '1.5rem',
         '3xl': '2rem',
+        '4xl': '2.5rem',
       },
       fontFamily: {
-        'fun': ['Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'cursive'],
+        'fun': ['var(--font-fredoka)', 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'cursive'],
+      },
+      fontSize: {
+        // Tamaños optimizados para niños (más grandes)
+        'xs': ['0.875rem', { lineHeight: '1.5' }],      // 15.75px
+        'sm': ['1rem', { lineHeight: '1.6' }],          // 18px
+        'base': ['1.125rem', { lineHeight: '1.7' }],    // 20.25px
+        'lg': ['1.25rem', { lineHeight: '1.7' }],       // 22.5px
+        'xl': ['1.5rem', { lineHeight: '1.6' }],        // 27px
+        '2xl': ['1.875rem', { lineHeight: '1.5' }],     // 33.75px
+        '3xl': ['2.25rem', { lineHeight: '1.4' }],      // 40.5px
+        '4xl': ['3rem', { lineHeight: '1.3' }],         // 54px
+        '5xl': ['3.75rem', { lineHeight: '1.2' }],      // 67.5px
+        '6xl': ['4.5rem', { lineHeight: '1.1' }],       // 81px
+      },
+      boxShadow: {
+        'kid': '0 8px 0 rgba(0, 0, 0, 0.2)',
+        'kid-hover': '0 4px 0 rgba(0, 0, 0, 0.2)',
+        'kid-active': '0 2px 0 rgba(0, 0, 0, 0.2)',
       },
     },
   },

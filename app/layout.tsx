@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import { Nunito, Quicksand } from "next/font/google";
+import { Fredoka } from "next/font/google";
 import "./globals.css";
 import { DarkModeProvider, FavoritesProvider } from '@/lib/contexts';
 
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-nunito",
-});
-
-const quicksand = Quicksand({
+// Fuente Fredoka - Optimizada para niños: amigable, redondeada y muy legible
+const fredoka = Fredoka({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-quicksand",
+  variable: "--font-fredoka",
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -41,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body
-        className={`${nunito.variable} ${quicksand.variable} ${nunito.className} antialiased`}
+        className={`${fredoka.variable} ${fredoka.className} antialiased`}
       >
         <DarkModeProvider>
           <FavoritesProvider>

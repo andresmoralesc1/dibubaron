@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { playClickSound, playHoverSound } from '@/lib/sounds';
+import { fireConfettiAt } from '@/lib/confetti';
+import { visitCategory } from '@/lib/gamification';
 
 interface CategoryCardProps {
   id: string;
@@ -25,15 +28,27 @@ export default function CategoryCard({ id, title, image, slug, count }: Category
 
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
+  const handleClick = (e: React.MouseEvent) => {
+    playClickSound();
+    fireConfettiAt(e.clientX, e.clientY);
+    visitCategory(); // Registrar visita para gamificación
+  };
+
+  const handleHover = () => {
+    playHoverSound();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -8, rotate: Math.random() > 0.5 ? 2 : -2 }}
+      whileHover={{ y: -12, rotate: Math.random() > 0.5 ? 3 : -3, scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onMouseEnter={handleHover}
       className={`group block bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden relative border-4 ${randomColor}`}
     >
-      <Link href={`/categoria/${slug}`}>
+      <Link href={`/categoria/${slug}`} onClick={handleClick}>
         <div className="relative h-48 bg-gradient-to-br from-primary-100 via-fun-yellow/20 to-fun-pink/20 dark:from-primary-900 dark:to-primary-800">
           <Image
             src={image}

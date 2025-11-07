@@ -104,13 +104,11 @@ export default function TiendaPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl md:text-6xl font-black text-primary dark:text-primary-accent mb-4 flex items-center justify-center gap-4">
-            <FiShoppingBag className="text-fun-yellow animate-bounce" />
-            Tienda de Cursos
-            <FiPackage className="text-fun-pink animate-bounce" />
+          <h1 className="text-6xl md:text-7xl font-black text-primary dark:text-primary-accent mb-4 flex items-center justify-center gap-4">
+            🛒 Tienda de Cursos 🎨
           </h1>
-          <p className="text-xl text-dark-light dark:text-gray-300 max-w-2xl mx-auto">
-            Descubre nuestros cursos de dibujo y lleva tu arte al siguiente nivel
+          <p className="text-2xl md:text-3xl font-bold text-dark-light dark:text-gray-300 max-w-2xl mx-auto">
+            ✨ ¡Descubre cursos súper divertidos para aprender a dibujar! 🌟
           </p>
         </motion.div>
 
@@ -139,22 +137,22 @@ export default function TiendaPage() {
               className="mb-8"
             >
               <div className="flex items-center gap-3 mb-4">
-                <FiFilter className="text-2xl text-primary dark:text-primary-accent" />
-                <h2 className="text-2xl font-bold text-dark-base dark:text-white">
-                  Filtrar por categoría
+                <span className="text-4xl">🔍</span>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-dark-base dark:text-white">
+                  Elige tu Categoría Favorita
                 </h2>
               </div>
 
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setSelectedCategory('all')}
-                  className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  className={`px-8 py-4 rounded-full font-extrabold text-lg transition-all duration-300 ${
                     selectedCategory === 'all'
-                      ? 'bg-primary text-white shadow-lg scale-105'
-                      : 'bg-white dark:bg-gray-800 text-dark-base dark:text-white hover:bg-primary-100 dark:hover:bg-primary-900'
+                      ? 'bg-gradient-to-r from-fun-pink to-fun-purple text-white shadow-kid hover:shadow-kid-hover hover:translate-y-1'
+                      : 'bg-white dark:bg-gray-800 text-dark-base dark:text-white hover:bg-fun-yellow/30 dark:hover:bg-primary-900 shadow-lg hover:scale-105'
                   }`}
                 >
-                  Todos los cursos ({products.length})
+                  🎨 Todos los cursos ({products.length})
                 </button>
 
                 {categories.map((category) => (
@@ -185,9 +183,9 @@ export default function TiendaPage() {
                 <motion.h2
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="text-3xl font-black text-primary dark:text-primary-accent mb-6 flex items-center gap-3"
+                  className="text-4xl md:text-5xl font-black text-primary dark:text-primary-accent mb-6 flex items-center gap-3"
                 >
-                  ⭐ Cursos Destacados
+                  ⭐ ¡Cursos Súper Especiales! ✨
                 </motion.h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

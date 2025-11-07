@@ -5,15 +5,37 @@ import Header from './Header';
 import Footer from './Footer';
 import CategoryCard from './CategoryCard';
 import SearchModal from './SearchModal';
+import MascotGuide from './MascotGuide';
+import ProgressBar from './ProgressBar';
+import AchievementsModal from './AchievementsModal';
+import AchievementUnlocked from './AchievementUnlocked';
 import { categories } from '@/lib/categories';
 import { useDarkMode } from '@/lib/contexts';
+import { useAchievements } from '@/lib/useAchievements';
 import { motion } from 'framer-motion';
+import { playSuccessSound } from '@/lib/sounds';
+import { fireCornerConfetti, fireEmojiRain } from '@/lib/confetti';
+import { FiAward } from 'react-icons/fi';
 
 export default function HomePage() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [achievementsOpen, setAchievementsOpen] = useState(false);
   const { darkMode, toggleDarkMode } = useDarkMode();
+  const { newAchievement, clearAchievement } = useAchievements();
 
   const popularCategories = categories.slice(0, 6);
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    playSuccessSound();
+    fireCornerConfetti();
+    fireEmojiRain('🎨');
+
+    // Simular envío exitoso
+    setTimeout(() => {
+      alert('¡Genial! 🎉 Te has suscrito a nuestra newsletter. ¡Prepárate para recibir dibujos súper divertidos!');
+    }, 500);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">
@@ -24,8 +46,24 @@ export default function HomePage() {
       />
 
       <main className="flex-grow">
+        {/* Barra de progreso */}
+        <div className="container mx-auto px-4 py-6">
+          <ProgressBar />
+
+          {/* Botón de logros */}
+          <motion.button
+            onClick={() => setAchievementsOpen(true)}
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-4 w-full sm:w-auto bg-gradient-to-r from-fun-yellow to-fun-orange text-dark-base font-extrabold text-lg px-8 py-4 rounded-full shadow-kid hover:shadow-kid-hover hover:translate-y-1 flex items-center justify-center gap-3"
+          >
+            <FiAward className="text-2xl" />
+            Ver Mis Logros 🏆
+          </motion.button>
+        </div>
+
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-fun-yellow via-fun-orange to-fun-pink text-white py-16 md:py-20 overflow-hidden">
+        <section className="relative bg-gradient-to-br from-fun-yellow via-fun-orange via-fun-pink to-fun-purple text-white py-20 md:py-24 overflow-hidden">
           {/* Elementos decorativos flotantes */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <motion.div
@@ -63,18 +101,18 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 drop-shadow-lg"
-              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 drop-shadow-lg"
+              style={{ textShadow: '3px 3px 6px rgba(0,0,0,0.3)' }}
             >
-              ¡Aprende a dibujar! 🖍️
+              ¡Aprende a Dibujar! 🎨✨
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-white font-semibold max-w-3xl mx-auto drop-shadow-md"
+              className="text-2xl md:text-3xl text-white font-bold max-w-3xl mx-auto drop-shadow-md"
             >
-              Dibuja tus personajes favoritos paso a paso ✨
+              🌟 Dibuja tus personajes favoritos paso a paso 🖍️
             </motion.p>
           </div>
         </section>
@@ -94,12 +132,12 @@ export default function HomePage() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-extrabold text-primary mb-3"
+              className="text-4xl md:text-5xl font-extrabold text-primary mb-3"
             >
-              ¡Los Más Dibujados! 🌟
+              🌟 ¡Los Más Dibujados! ⭐
             </motion.h2>
-            <p className="text-dark-light text-lg font-medium">
-              Estos son los favoritos de todos los niños
+            <p className="text-dark-light text-xl font-bold">
+              ¡Estos son los favoritos de todos los niños! 😊
             </p>
           </div>
 
@@ -206,7 +244,7 @@ export default function HomePage() {
         </section>
 
         {/* Newsletter Section */}
-        <section className="relative bg-gradient-to-r from-fun-purple via-fun-pink to-fun-red py-16 overflow-hidden">
+        <section className="relative bg-gradient-to-r from-fun-purple via-fun-pink via-fun-orange to-fun-yellow py-20 overflow-hidden">
           {/* Decoraciones */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <motion.span
@@ -239,7 +277,7 @@ export default function HomePage() {
               <p className="text-white font-semibold mb-8 text-lg drop-shadow-md">
                 Suscríbete y recibe ideas súper divertidas
               </p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input
                   type="email"
                   placeholder="Tu correo electrónico"
@@ -248,9 +286,9 @@ export default function HomePage() {
                 />
                 <button
                   type="submit"
-                  className="bg-white text-fun-purple px-8 py-4 rounded-2xl font-bold hover:bg-fun-yellow hover:scale-105 transition-all shadow-xl hover:shadow-2xl"
+                  className="bg-white text-fun-purple px-10 py-5 rounded-full font-extrabold text-xl hover:bg-fun-yellow hover:scale-110 transition-all shadow-kid hover:shadow-kid-hover hover:translate-y-1 active:translate-y-2 active:shadow-kid-active"
                 >
-                  ¡Suscribirme! 🚀
+                  ¡Suscribirme! 🚀✨
                 </button>
               </form>
             </motion.div>
@@ -261,6 +299,9 @@ export default function HomePage() {
       <Footer />
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <AchievementsModal isOpen={achievementsOpen} onClose={() => setAchievementsOpen(false)} />
+      <MascotGuide />
+      <AchievementUnlocked achievement={newAchievement} onClose={clearAchievement} />
     </div>
   );
 }
