@@ -104,3 +104,42 @@ input, textarea {
     animation: pulse-color 2s infinite;
   }
 }
+
+/* Respeto por preferencias de movimiento reducido (Accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Desactivar animaciones específicas de niños */
+  .animate-shake,
+  .animate-bounce-fun,
+  .animate-pulse-color,
+  .animate-bounce,
+  .animate-spin {
+    animation: none !important;
+  }
+
+  /* Reducir transformaciones hover */
+  *:hover {
+    transform: none !important;
+  }
+
+  /* Mantener feedback visual básico pero sin movimiento */
+  button:hover,
+  a:hover,
+  [role="button"]:hover {
+    opacity: 0.9;
+    filter: brightness(1.1);
+  }
+
+  .btn-kid:hover,
+  .btn-kid:active {
+    transform: none !important;
+  }
+}

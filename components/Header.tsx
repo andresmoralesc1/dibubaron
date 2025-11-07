@@ -53,6 +53,7 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
                 src="/logo.svg"
                 alt="DibuBaron Logo"
                 fill
+                sizes="56px"
                 className="object-contain drop-shadow-lg"
                 priority
               />

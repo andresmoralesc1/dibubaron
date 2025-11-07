@@ -54,6 +54,7 @@ export default function CategoryCard({ title, image, slug, count }: CategoryCard
             src={image}
             alt={title}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-300"
           />
 
