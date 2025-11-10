@@ -1,12 +1,24 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 
-// Configuración de WooCommerce API
-const api = new WooCommerceRestApi({
-  url: process.env.NEXT_PUBLIC_WOOCOMMERCE_URL || "https://tu-tienda.com",
-  consumerKey: process.env.WOOCOMMERCE_CONSUMER_KEY || "",
-  consumerSecret: process.env.WOOCOMMERCE_CONSUMER_SECRET || "",
-  version: "wc/v3",
-});
+// Lazy initialization of WooCommerce API client
+let api: WooCommerceRestApi | null = null;
+
+function getApiClient(): WooCommerceRestApi {
+  if (!api) {
+    // Only initialize if we have valid credentials
+    if (!process.env.WOOCOMMERCE_CONSUMER_KEY || !process.env.WOOCOMMERCE_CONSUMER_SECRET) {
+      throw new Error('WooCommerce credentials not configured');
+    }
+
+    api = new WooCommerceRestApi({
+      url: process.env.NEXT_PUBLIC_WOOCOMMERCE_URL || "https://tu-tienda.com",
+      consumerKey: process.env.WOOCOMMERCE_CONSUMER_KEY,
+      consumerSecret: process.env.WOOCOMMERCE_CONSUMER_SECRET,
+      version: "wc/v3",
+    });
+  }
+  return api;
+}
 
 export interface WooCommerceProduct {
   id: number;
@@ -43,7 +55,8 @@ export async function getProducts(params: {
   on_sale?: boolean;
 } = {}): Promise<WooCommerceProduct[]> {
   try {
-    const response = await api.get("products", params);
+    const client = getApiClient();
+    const response = await client.get("products", params);
     return response.data;
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -54,7 +67,8 @@ export async function getProducts(params: {
 // Obtener un producto por slug
 export async function getProductBySlug(slug: string): Promise<WooCommerceProduct | null> {
   try {
-    const response = await api.get("products", { slug });
+    const client = getApiClient();
+    const response = await client.get("products", { slug });
     return response.data[0] || null;
   } catch (error) {
     console.error("Error fetching product:", error);
@@ -65,7 +79,8 @@ export async function getProductBySlug(slug: string): Promise<WooCommerceProduct
 // Obtener categorías de productos
 export async function getProductCategories() {
   try {
-    const response = await api.get("products/categories");
+    const client = getApiClient();
+    const response = await client.get("products/categories");
     return response.data;
   } catch (error) {
     console.error("Error fetching categories:", error);

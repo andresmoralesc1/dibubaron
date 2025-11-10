@@ -7,6 +7,12 @@ export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
   try {
+    // Verificar que las variables de entorno estén configuradas
+    if (!process.env.WOOCOMMERCE_CONSUMER_KEY || !process.env.WOOCOMMERCE_CONSUMER_SECRET) {
+      console.warn('WooCommerce credentials not configured');
+      return NextResponse.json([]);
+    }
+
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const featured = searchParams.get('featured');
