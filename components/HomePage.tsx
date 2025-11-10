@@ -9,6 +9,7 @@ import MascotGuide from './MascotGuide';
 import ProgressBar from './ProgressBar';
 import AchievementsModal from './AchievementsModal';
 import AchievementUnlocked from './AchievementUnlocked';
+import VideoSection from './VideoSection';
 import { categories } from '@/lib/categories';
 import { useDarkMode } from '@/lib/contexts';
 import { useAchievements } from '@/lib/useAchievements';
@@ -154,6 +155,9 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        {/* Video Tutorials Section */}
+        <VideoSection />
 
         {/* All Categories Section */}
         <section className="bg-gray-light dark:bg-gray-800 py-12">

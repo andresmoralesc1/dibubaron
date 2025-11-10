@@ -1,0 +1,188 @@
+{
+  "name": "DibuBaron YouTube to NocoDB",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCVcz3XyIbzlASMreLQxYqUw",
+        "options": {}
+      },
+      "id": "rss-trigger",
+      "name": "RSS Feed Trigger",
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "dibubaron-youtube-rss"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract video ID from YouTube URL\nconst items = $input.all();\n\nfor (const item of items) {\n  const link = item.json.link || '';\n  const videoId = link.split('v=')[1]?.split('&')[0] || '';\n  \n  // Extract published date\n  const pubDate = new Date(item.json.pubDate || item.json.isoDate);\n  \n  // Generate thumbnail URLs\n  const thumbnailMax = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;\n  const thumbnailHQ = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;\n  \n  // Clean description (remove HTML tags if any)\n  const description = (item.json.contentSnippet || item.json.content || '')\n    .replace(/<[^>]*>/g, '')\n    .trim();\n  \n  item.json = {\n    video_id: videoId,\n    title: item.json.title,\n    description: description,\n    thumbnail_url: thumbnailMax,\n    video_url: link,\n    published_at: pubDate.toISOString(),\n    featured: false,\n    category: 'Otros' // Default category, can be changed manually in NocoDB\n  };\n}\n\nreturn items;"
+      },
+      "id": "code-transform",
+      "name": "Transform Video Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "method": "GET",
+        "url": "={{ $json.video_id }}",
+        "options": {}
+      },
+      "id": "check-duplicate",
+      "name": "Check if Video Exists",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [650, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "nocodb-auth",
+          "name": "NocoDB Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "exists-check",
+              "leftValue": "={{ $json.list?.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-not-exists",
+      "name": "If Video Not Exists",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "method": "POST",
+        "url": "https://db.neuralflow.space/api/v1/db/data/noco/{BASE_ID}/{TABLE_ID}/dibubaron_videos",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $json.video_id }}"
+            },
+            {
+              "name": "title",
+              "value": "={{ $json.title }}"
+            },
+            {
+              "name": "description",
+              "value": "={{ $json.description }}"
+            },
+            {
+              "name": "thumbnail_url",
+              "value": "={{ $json.thumbnail_url }}"
+            },
+            {
+              "name": "video_url",
+              "value": "={{ $json.video_url }}"
+            },
+            {
+              "name": "published_at",
+              "value": "={{ $json.published_at }}"
+            },
+            {
+              "name": "featured",
+              "value": "={{ $json.featured }}"
+            },
+            {
+              "name": "category",
+              "value": "={{ $json.category }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "insert-video",
+      "name": "Insert Video to NocoDB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1050, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "nocodb-auth",
+          "name": "NocoDB Auth"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "RSS Feed Trigger": {
+      "main": [
+        [
+          {
+            "node": "Transform Video Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform Video Data": {
+      "main": [
+        [
+          {
+            "node": "Check if Video Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Video Exists": {
+      "main": [
+        [
+          {
+            "node": "If Video Not Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Video Not Exists": {
+      "main": [
+        [
+          {
+            "node": "Insert Video to NocoDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-10T00:00:00.000Z",
+  "versionId": "1"
+}
