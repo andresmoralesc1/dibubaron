@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getProductCategories } from '@/lib/woocommerce';
 
-// Configuración para Vercel: forzar renderizado dinámico y cachear respuestas
+// Configuración para Vercel: forzar renderizado dinámico
 export const dynamic = 'force-dynamic';
-export const revalidate = 300; // Re-generar cada 5 minutos (las categorías cambian menos)
+export const runtime = 'nodejs';
 
 export async function GET() {
   try {

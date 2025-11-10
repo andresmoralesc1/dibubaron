@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getProducts } from '@/lib/woocommerce';
 
-// Configuración para Vercel: forzar renderizado dinámico y cachear respuestas
+// Configuración para Vercel: forzar renderizado dinámico
 export const dynamic = 'force-dynamic';
-export const revalidate = 60; // Re-generar cada 60 segundos (ISR)
+export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
   try {
