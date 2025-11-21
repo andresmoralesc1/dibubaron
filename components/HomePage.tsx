@@ -12,26 +12,69 @@ import { playSuccessSound } from '@/lib/sounds';
 import { fireCornerConfetti, fireEmojiRain } from '@/lib/confetti';
 import type { YouTubeVideo } from '@/types/video';
 
+// Videos más populares del canal (ordenados por vistas)
+const POPULAR_VIDEO_IDS = ['qitzWP2HTmk', '3gvEQR2IqsA', 'UIXyz2SFQFE'];
+
 export default function HomePage() {
   const [topVideos, setTopVideos] = useState<YouTubeVideo[]>([]);
   const [loadingVideos, setLoadingVideos] = useState(true);
 
   useEffect(() => {
-    async function fetchTopVideos() {
+    async function fetchPopularVideos() {
       try {
-        const response = await fetch('/api/videos?limit=3&offset=0');
+        // Fetch video info from our API
+        const response = await fetch('/api/videos?limit=50');
         if (response.ok) {
           const data = await response.json();
-          setTopVideos(data.videos || data);
+          const allVideos = data.videos || [];
+
+          // Filter to get only the popular videos in the specified order
+          const popularVideos = POPULAR_VIDEO_IDS.map(id =>
+            allVideos.find((v: YouTubeVideo) => v.video_id === id)
+          ).filter(Boolean) as YouTubeVideo[];
+
+          // If some popular videos weren't found in API, create placeholder entries
+          if (popularVideos.length < POPULAR_VIDEO_IDS.length) {
+            POPULAR_VIDEO_IDS.forEach((videoId, index) => {
+              if (!popularVideos.find(v => v.video_id === videoId)) {
+                popularVideos.push({
+                  id: 1000 + index,
+                  video_id: videoId,
+                  title: 'Video Popular de DibuBaron',
+                  description: '',
+                  thumbnail_url: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+                  video_url: `https://www.youtube.com/watch?v=${videoId}`,
+                  published_at: new Date().toISOString(),
+                  category: 'Popular',
+                  featured: true,
+                });
+              }
+            });
+          }
+
+          setTopVideos(popularVideos.slice(0, 3));
         }
       } catch (error) {
-        console.error('Error loading top videos:', error);
+        console.error('Error loading popular videos:', error);
+        // Fallback: create entries from video IDs
+        const fallbackVideos = POPULAR_VIDEO_IDS.map((videoId, index) => ({
+          id: index + 1,
+          video_id: videoId,
+          title: 'Video Popular de DibuBaron',
+          description: '',
+          thumbnail_url: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+          video_url: `https://www.youtube.com/watch?v=${videoId}`,
+          published_at: new Date().toISOString(),
+          category: 'Popular',
+          featured: true,
+        }));
+        setTopVideos(fallbackVideos);
       } finally {
         setLoadingVideos(false);
       }
     }
 
-    fetchTopVideos();
+    fetchPopularVideos();
   }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
