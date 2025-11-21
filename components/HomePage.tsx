@@ -77,16 +77,47 @@ export default function HomePage() {
     fetchPopularVideos();
   }, []);
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    playSuccessSound();
-    fireCornerConfetti();
-    fireEmojiRain('🎨');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
 
-    // Simular envío exitoso
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!newsletterEmail) return;
+
+    setNewsletterStatus('loading');
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setNewsletterStatus('success');
+        setNewsletterMessage('¡Genial! 🎉 Te has suscrito correctamente');
+        setNewsletterEmail('');
+        playSuccessSound();
+        fireCornerConfetti();
+        fireEmojiRain('🎨');
+      } else {
+        setNewsletterStatus('error');
+        setNewsletterMessage(data.error || 'Error al suscribirse');
+      }
+    } catch {
+      setNewsletterStatus('error');
+      setNewsletterMessage('Error de conexión. Intenta de nuevo.');
+    }
+
+    // Reset status after 5 seconds
     setTimeout(() => {
-      alert('¡Genial! 🎉 Te has suscrito a nuestra newsletter. ¡Prepárate para recibir dibujos súper divertidos!');
-    }, 500);
+      setNewsletterStatus('idle');
+      setNewsletterMessage('');
+    }, 5000);
   };
 
   return (
@@ -293,7 +324,10 @@ export default function HomePage() {
                   <input
                     type="email"
                     placeholder="tu@correo.com"
-                    className="w-full px-6 py-5 rounded-2xl focus:outline-none focus:ring-4 focus:ring-white/50 text-gray-900 font-semibold shadow-2xl text-lg border-4 border-white/50 placeholder:text-gray-400"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
+                    className="w-full px-6 py-5 rounded-2xl focus:outline-none focus:ring-4 focus:ring-white/50 text-gray-900 font-semibold shadow-2xl text-lg border-4 border-white/50 placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
                     required
                   />
                   <motion.div
@@ -305,13 +339,38 @@ export default function HomePage() {
                 </div>
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white text-fun-purple px-10 py-5 rounded-2xl font-extrabold text-xl shadow-2xl hover:bg-fun-yellow transition-colors border-4 border-white/50 whitespace-nowrap"
+                  whileHover={{ scale: newsletterStatus === 'loading' ? 1 : 1.05 }}
+                  whileTap={{ scale: newsletterStatus === 'loading' ? 1 : 0.95 }}
+                  disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
+                  className="bg-white text-fun-purple px-10 py-5 rounded-2xl font-extrabold text-xl shadow-2xl hover:bg-fun-yellow transition-colors border-4 border-white/50 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  ¡Suscribirme! 🚀
+                  {newsletterStatus === 'loading' ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Enviando...
+                    </span>
+                  ) : newsletterStatus === 'success' ? (
+                    '¡Listo! ✅'
+                  ) : (
+                    '¡Suscribirme! 🚀'
+                  )}
                 </motion.button>
               </form>
+              {/* Mensaje de feedback */}
+              {newsletterMessage && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`mt-4 font-bold text-lg ${
+                    newsletterStatus === 'success' ? 'text-white' : 'text-red-200'
+                  }`}
+                >
+                  {newsletterMessage}
+                </motion.p>
+              )}
             </motion.div>
           </div>
         </section>
