@@ -12,12 +12,19 @@ interface VideoCardProps {
 
 export default function VideoCard({ video, featured = false }: VideoCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fallback thumbnails si maxresdefault no está disponible
-  const thumbnailUrl = imageError
-    ? video.thumbnail_url.replace('maxresdefault', 'hqdefault')
-    : video.thumbnail_url;
+  // Sistema de fallback con múltiples calidades de thumbnails
+  const thumbnailQualities = ['maxresdefault', 'sddefault', 'hqdefault', 'mqdefault', 'default'];
+  const currentQuality = thumbnailQualities[Math.min(errorCount, thumbnailQualities.length - 1)];
+  const thumbnailUrl = video.thumbnail_url.replace(/\/(maxresdefault|sddefault|hqdefault|mqdefault|default)\.jpg/, `/${currentQuality}.jpg`);
+
+  const handleImageError = () => {
+    if (errorCount < thumbnailQualities.length - 1) {
+      setErrorCount(prev => prev + 1);
+    }
+  };
 
   const formattedDate = new Date(video.published_at).toLocaleDateString('es-ES', {
     year: 'numeric',
@@ -27,14 +34,18 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
 
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-shadow hover:shadow-2xl ${
+      className={`group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg transition-all hover:shadow-2xl ${
         featured ? 'col-span-2 row-span-2' : ''
       }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setTimeout(() => setIsHovered(false), 2000)}
     >
       <a
         href={video.video_url}
@@ -43,14 +54,32 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
         className="block"
       >
         {/* Thumbnail */}
-        <div className="relative aspect-video w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100 dark:from-gray-700 dark:via-gray-800 dark:to-gray-700">
+          {/* Loading placeholder */}
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="text-6xl mb-2"
+                >
+                  🎨
+                </motion.div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">Cargando...</p>
+              </div>
+            </div>
+          )}
+
           <Image
             src={thumbnailUrl}
             alt={video.title}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-110"
-            onError={() => setImageError(true)}
+            className={`object-cover transition-all duration-300 group-hover:scale-110 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+            onError={handleImageError}
+            onLoad={() => setIsLoading(false)}
             sizes={featured ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 100vw, 33vw'}
+            unoptimized={errorCount > 2}
           />
 
           {/* Overlay de Play */}
@@ -89,7 +118,7 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
         {/* Contenido */}
         <div className="p-4">
           <h3
-            className={`font-bold text-gray-900 line-clamp-2 ${
+            className={`font-bold text-gray-900 dark:text-gray-100 line-clamp-2 ${
               featured ? 'text-xl md:text-2xl' : 'text-base md:text-lg'
             }`}
           >
@@ -97,12 +126,12 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
           </h3>
 
           {video.description && (
-            <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
               {video.description}
             </p>
           )}
 
-          <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
+          <div className="mt-3 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
             <span className="flex items-center">
               <svg
                 className="mr-1 h-4 w-4"
@@ -148,7 +177,7 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
 
           {/* Hover: Call to Action */}
           <motion.div
-            className="mt-3 flex items-center text-sm font-semibold text-purple-600"
+            className="mt-3 flex items-center text-sm font-semibold text-purple-600 dark:text-purple-400"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
             transition={{ duration: 0.2 }}

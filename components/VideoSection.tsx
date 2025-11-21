@@ -14,10 +14,10 @@ export default function VideoSection() {
     async function fetchVideos() {
       try {
         // Obtener solo los 4 videos más recientes
-        const response = await fetch('/api/videos?limit=4');
+        const response = await fetch('/api/videos?limit=4&offset=0');
         if (response.ok) {
           const data = await response.json();
-          setVideos(data);
+          setVideos(data.videos || data);
         }
       } catch (error) {
         console.error('Error loading videos:', error);

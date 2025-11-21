@@ -63,6 +63,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const limitParam = searchParams.get('limit');
+    const offsetParam = searchParams.get('offset');
     const category = searchParams.get('category');
     const featured = searchParams.get('featured');
 
@@ -90,13 +91,25 @@ export async function GET(request: Request) {
       videos = videos.filter(v => v.featured === true);
     }
 
-    // Aplicar límite
-    if (limitParam) {
-      const limit = parseInt(limitParam);
-      videos = videos.slice(0, limit);
-    }
+    // Guardar el total antes de aplicar límite
+    const total = videos.length;
 
-    return NextResponse.json(videos);
+    // Aplicar offset y límite para paginación
+    const offset = offsetParam ? parseInt(offsetParam) : 0;
+    const limit = limitParam ? parseInt(limitParam) : videos.length;
+
+    videos = videos.slice(offset, offset + limit);
+
+    // Devolver respuesta con metadata de paginación
+    return NextResponse.json({
+      videos,
+      pagination: {
+        total,
+        offset,
+        limit,
+        hasMore: offset + limit < total
+      }
+    });
   } catch (error) {
     console.error('Error fetching videos:', error);
     return NextResponse.json(

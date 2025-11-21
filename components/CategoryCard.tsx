@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { playClickSound, playHoverSound } from '@/lib/sounds';
 import { fireConfettiAt } from '@/lib/confetti';
 import { visitCategory } from '@/lib/gamification';
+import { lightVibration, successVibration } from '@/lib/haptics';
 
 interface CategoryCardProps {
   id: string;
@@ -30,12 +31,14 @@ export default function CategoryCard({ title, image, slug, count }: CategoryCard
 
   const handleClick = (e: React.MouseEvent) => {
     playClickSound();
+    successVibration();
     fireConfettiAt(e.clientX, e.clientY);
     visitCategory(); // Registrar visita para gamificación
   };
 
   const handleHover = () => {
     playHoverSound();
+    lightVibration();
   };
 
   return (
@@ -44,9 +47,10 @@ export default function CategoryCard({ title, image, slug, count }: CategoryCard
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       whileHover={{ y: -12, rotate: Math.random() > 0.5 ? 3 : -3, scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.95, rotate: 0 }}
       onMouseEnter={handleHover}
-      className={`group block bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden relative border-4 ${randomColor}`}
+      onTouchStart={handleHover}
+      className={`group block bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl active:shadow-lg transition-all duration-300 overflow-hidden relative border-4 ${randomColor} touch-manipulation`}
     >
       <Link href={`/categoria/${slug}`} onClick={handleClick}>
         <div className="relative h-48 bg-gradient-to-br from-primary-100 via-fun-yellow/20 to-fun-pink/20 dark:from-primary-900 dark:to-primary-800">

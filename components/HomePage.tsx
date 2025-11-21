@@ -1,23 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import CategoryCard from './CategoryCard';
+import VideoCard from './VideoCard';
 import SearchModal from './SearchModal';
 import MascotGuide from './MascotGuide';
 import VideoSection from './VideoSection';
+import ScrollIndicator from './ScrollIndicator';
 import { categories } from '@/lib/categories';
 import { useDarkMode } from '@/lib/contexts';
 import { motion } from 'framer-motion';
 import { playSuccessSound } from '@/lib/sounds';
 import { fireCornerConfetti, fireEmojiRain } from '@/lib/confetti';
+import type { YouTubeVideo } from '@/types/video';
 
 export default function HomePage() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { darkMode, toggleDarkMode } = useDarkMode();
+  const [topVideos, setTopVideos] = useState<YouTubeVideo[]>([]);
+  const [loadingVideos, setLoadingVideos] = useState(true);
 
-  const popularCategories = categories.slice(0, 6);
+  useEffect(() => {
+    async function fetchTopVideos() {
+      try {
+        const response = await fetch('/api/videos?limit=3&offset=0');
+        if (response.ok) {
+          const data = await response.json();
+          setTopVideos(data.videos || data);
+        }
+      } catch (error) {
+        console.error('Error loading top videos:', error);
+      } finally {
+        setLoadingVideos(false);
+      }
+    }
+
+    fetchTopVideos();
+  }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,41 +116,75 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Popular Categories Section */}
-        <section className="container mx-auto px-4 py-12 bg-gradient-to-b from-white to-fun-yellow/10">
-          <div className="text-center mb-12">
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              className="mb-4"
-            >
-              <span className="text-5xl">⭐</span>
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-extrabold text-primary mb-3"
-            >
-              🌟 ¡Los Más Dibujados! ⭐
-            </motion.h2>
-            <p className="text-dark-light text-xl font-bold">
-              ¡Estos son los favoritos de todos los niños! 😊
-            </p>
-          </div>
+        {/* Top YouTube Videos Section */}
+        <section className="w-full bg-gradient-to-b from-gray-100 via-gray-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                className="mb-4"
+              >
+                <span className="text-5xl">🎬</span>
+              </motion.div>
+              <motion.h2
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100 mb-3"
+              >
+                🌟 Últimos Tutoriales en Video 📺
+              </motion.h2>
+              <p className="text-gray-600 dark:text-gray-400 text-xl font-bold">
+                ¡Aprende a dibujar paso a paso con nuestros videos! 🎨
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-            {popularCategories.map((category) => (
-              <CategoryCard
-                key={category.id}
-                id={category.id}
-                title={category.title}
-                image={category.image}
-                slug={category.slug}
-                count={category.count}
-              />
-            ))}
+            {loadingVideos ? (
+              <div className="flex justify-center py-12">
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-primary"></div>
+              </div>
+            ) : topVideos.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {topVideos.map((video, index) => (
+                  <motion.div
+                    key={video.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <VideoCard video={video} />
+                  </motion.div>
+                ))}
+              </div>
+            ) : null}
+
+            {/* CTA to YouTube */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-center"
+            >
+              <a
+                href="https://www.youtube.com/@DibuBaron?sub_confirmation=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-extrabold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+                ¡Suscríbete a nuestro canal!
+              </a>
+            </motion.div>
           </div>
         </section>
 
@@ -281,6 +336,7 @@ export default function HomePage() {
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <MascotGuide />
+      <ScrollIndicator />
     </div>
   );
 }

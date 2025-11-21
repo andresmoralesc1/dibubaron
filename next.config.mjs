@@ -18,6 +18,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.hostingersite.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },
