@@ -61,62 +61,7 @@ export default function HomePage() {
       />
 
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-fun-yellow via-fun-orange via-fun-pink to-fun-purple text-white py-20 md:py-24 overflow-hidden">
-          {/* Elementos decorativos flotantes */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <motion.div
-              animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute top-10 left-10 w-16 h-16 bg-white/20 rounded-full"
-            />
-            <motion.div
-              animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-              className="absolute top-20 right-20 w-12 h-12 bg-white/20 rounded-full"
-            />
-            <motion.div
-              animate={{ y: [0, -15, 0], x: [0, 10, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
-              className="absolute bottom-20 left-1/4 w-20 h-20 bg-white/15 rounded-full"
-            />
-            <motion.div
-              animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, delay: 1.5 }}
-              className="absolute bottom-10 right-1/3 w-14 h-14 bg-white/15 rounded-full"
-            />
-          </div>
-
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", duration: 0.8 }}
-              className="mb-6"
-            >
-              <span className="text-6xl md:text-8xl">🎨</span>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 drop-shadow-lg"
-              style={{ textShadow: '3px 3px 6px rgba(0,0,0,0.3)' }}
-            >
-              ¡Aprende a Dibujar! 🎨✨
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-2xl md:text-3xl text-white font-bold max-w-3xl mx-auto drop-shadow-md"
-            >
-              🌟 Dibuja tus personajes favoritos paso a paso 🖍️
-            </motion.p>
-          </div>
-        </section>
-
-        {/* Top YouTube Videos Section */}
+        {/* Top YouTube Videos Section - Hero */}
         <section className="w-full bg-gradient-to-b from-gray-100 via-gray-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -132,12 +77,12 @@ export default function HomePage() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-100 mb-3"
+                className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-800 dark:text-gray-100 mb-3"
               >
-                🌟 Últimos Tutoriales en Video 📺
+                🎨 ¡Los Videos Más Populares! 🌟
               </motion.h2>
-              <p className="text-gray-600 dark:text-gray-400 text-xl font-bold">
-                ¡Aprende a dibujar paso a paso con nuestros videos! 🎨
+              <p className="text-gray-600 dark:text-gray-400 text-xl md:text-2xl font-bold">
+                Aprende a dibujar con los tutoriales favoritos de todos 📺✨
               </p>
             </div>
 
@@ -313,19 +258,29 @@ export default function HomePage() {
               <p className="text-white font-semibold mb-8 text-lg drop-shadow-md">
                 Suscríbete y recibe ideas súper divertidas
               </p>
-              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Tu correo electrónico"
-                  className="flex-1 px-5 py-4 rounded-2xl focus:outline-none focus:ring-4 focus:ring-white/50 text-dark font-medium shadow-xl"
-                  required
-                />
-                <button
+              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
+                <div className="flex-1 relative">
+                  <input
+                    type="email"
+                    placeholder="tu@correo.com"
+                    className="w-full px-6 py-5 rounded-2xl focus:outline-none focus:ring-4 focus:ring-white/50 text-gray-900 font-semibold shadow-2xl text-lg border-4 border-white/50 placeholder:text-gray-400"
+                    required
+                  />
+                  <motion.div
+                    className="absolute left-0 -bottom-1 h-1 bg-white rounded-full"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '100%' }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  />
+                </div>
+                <motion.button
                   type="submit"
-                  className="bg-white text-fun-purple px-10 py-5 rounded-full font-extrabold text-xl hover:bg-fun-yellow hover:scale-110 transition-all shadow-kid hover:shadow-kid-hover hover:translate-y-1 active:translate-y-2 active:shadow-kid-active"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-white text-fun-purple px-10 py-5 rounded-2xl font-extrabold text-xl shadow-2xl hover:bg-fun-yellow transition-colors border-4 border-white/50 whitespace-nowrap"
                 >
-                  ¡Suscribirme! 🚀✨
-                </button>
+                  ¡Suscribirme! 🚀
+                </motion.button>
               </form>
             </motion.div>
           </div>
