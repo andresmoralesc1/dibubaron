@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { playClickSound, playHoverSound } from '@/lib/sounds';
 import { fireConfettiAt } from '@/lib/confetti';
@@ -11,29 +10,20 @@ import { lightVibration, successVibration } from '@/lib/haptics';
 interface CategoryCardProps {
   id: string;
   title: string;
-  image: string;
+  image?: string;
+  emoji?: string;
+  color?: string;
   slug: string;
   count?: number;
 }
 
-export default function CategoryCard({ title, image, slug, count }: CategoryCardProps) {
-
-  const colors = [
-    'border-fun-yellow',
-    'border-fun-orange',
-    'border-fun-pink',
-    'border-fun-purple',
-    'border-fun-green',
-    'border-primary',
-  ];
-
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+export default function CategoryCard({ title, emoji, color, slug, count }: CategoryCardProps) {
 
   const handleClick = (e: React.MouseEvent) => {
     playClickSound();
     successVibration();
     fireConfettiAt(e.clientX, e.clientY);
-    visitCategory(); // Registrar visita para gamificación
+    visitCategory();
   };
 
   const handleHover = () => {
@@ -41,46 +31,75 @@ export default function CategoryCard({ title, image, slug, count }: CategoryCard
     lightVibration();
   };
 
+  // Default gradient if no color specified
+  const gradientColor = color || 'from-purple-500 to-pink-400';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -12, rotate: Math.random() > 0.5 ? 3 : -3, scale: 1.05 }}
-      whileTap={{ scale: 0.95, rotate: 0 }}
+      whileHover={{ y: -12, scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       onMouseEnter={handleHover}
       onTouchStart={handleHover}
-      className={`group block bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl active:shadow-lg transition-all duration-300 overflow-hidden relative border-4 ${randomColor} touch-manipulation`}
+      className="group block bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl active:shadow-lg transition-all duration-300 overflow-hidden relative touch-manipulation"
     >
       <Link href={`/categoria/${slug}`} onClick={handleClick}>
-        <div className="relative h-48 bg-gradient-to-br from-primary-100 via-fun-yellow/20 to-fun-pink/20 dark:from-primary-900 dark:to-primary-800">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-300"
-          />
+        {/* Emoji Background */}
+        <div className={`relative h-40 bg-gradient-to-br ${gradientColor} flex items-center justify-center overflow-hidden`}>
+          {/* Animated emoji */}
+          <motion.span
+            className="text-8xl filter drop-shadow-lg select-none"
+            animate={{
+              rotate: [0, -5, 5, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            {emoji || '🎨'}
+          </motion.span>
 
-          {/* Efecto de brillo */}
-          <div className="absolute inset-0 bg-gradient-to-t from-white/0 to-white/20" />
+          {/* Floating decorations */}
+          <motion.div
+            className="absolute top-4 left-4 text-3xl opacity-40"
+            animate={{ y: [0, -10, 0], rotate: [0, 10, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            ✨
+          </motion.div>
+          <motion.div
+            className="absolute bottom-4 right-4 text-3xl opacity-40"
+            animate={{ y: [0, 10, 0], rotate: [0, -10, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity }}
+          >
+            🌟
+          </motion.div>
+
+          {/* Shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-white/20" />
         </div>
-        <div className="p-5 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
-          <h3 className="font-extrabold text-xl text-primary dark:text-primary-accent group-hover:scale-105 transition-transform inline-block">
+
+        {/* Content */}
+        <div className="p-5 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 text-center">
+          <h3 className="font-extrabold text-xl text-gray-800 dark:text-gray-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
             {title}
           </h3>
           {count && (
-            <p className="text-sm text-dark-light dark:text-gray-400 mt-2 font-semibold flex items-center gap-1">
-              <span className="text-lg">✨</span>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-semibold flex items-center justify-center gap-1">
+              <span className="text-lg">✏️</span>
               {count} dibujos
             </p>
           )}
         </div>
       </Link>
 
-      {/* Decoración esquina */}
-      <div className="absolute top-0 left-0 w-0 h-0 border-t-[40px] border-t-fun-yellow/30 border-r-[40px] border-r-transparent" />
+      {/* Corner decoration */}
+      <div className="absolute top-0 right-0 w-0 h-0 border-t-[30px] border-t-white/30 border-l-[30px] border-l-transparent" />
     </motion.div>
   );
 }
-

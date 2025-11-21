@@ -146,7 +146,8 @@ export default function HomePage() {
                   <CategoryCard
                     id={category.id}
                     title={category.title}
-                    image={category.image}
+                    emoji={category.emoji}
+                    color={category.color}
                     slug={category.slug}
                     count={category.count}
                   />
