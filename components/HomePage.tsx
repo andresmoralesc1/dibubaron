@@ -6,23 +6,16 @@ import Footer from './Footer';
 import CategoryCard from './CategoryCard';
 import SearchModal from './SearchModal';
 import MascotGuide from './MascotGuide';
-import ProgressBar from './ProgressBar';
-import AchievementsModal from './AchievementsModal';
-import AchievementUnlocked from './AchievementUnlocked';
 import VideoSection from './VideoSection';
 import { categories } from '@/lib/categories';
 import { useDarkMode } from '@/lib/contexts';
-import { useAchievements } from '@/lib/useAchievements';
 import { motion } from 'framer-motion';
 import { playSuccessSound } from '@/lib/sounds';
 import { fireCornerConfetti, fireEmojiRain } from '@/lib/confetti';
-import { FiAward } from 'react-icons/fi';
 
 export default function HomePage() {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [achievementsOpen, setAchievementsOpen] = useState(false);
   const { darkMode, toggleDarkMode } = useDarkMode();
-  const { newAchievement, clearAchievement } = useAchievements();
 
   const popularCategories = categories.slice(0, 6);
 
@@ -47,22 +40,6 @@ export default function HomePage() {
       />
 
       <main className="flex-grow">
-        {/* Barra de progreso */}
-        <div className="container mx-auto px-4 py-6">
-          <ProgressBar />
-
-          {/* Botón de logros */}
-          <motion.button
-            onClick={() => setAchievementsOpen(true)}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-4 w-full sm:w-auto bg-gradient-to-r from-fun-yellow to-fun-orange text-dark-base font-extrabold text-lg px-8 py-4 rounded-full shadow-kid hover:shadow-kid-hover hover:translate-y-1 flex items-center justify-center gap-3"
-          >
-            <FiAward className="text-2xl" />
-            Ver Mis Logros 🏆
-          </motion.button>
-        </div>
-
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-fun-yellow via-fun-orange via-fun-pink to-fun-purple text-white py-20 md:py-24 overflow-hidden">
           {/* Elementos decorativos flotantes */}
@@ -303,9 +280,7 @@ export default function HomePage() {
       <Footer />
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-      <AchievementsModal isOpen={achievementsOpen} onClose={() => setAchievementsOpen(false)} />
       <MascotGuide />
-      <AchievementUnlocked achievement={newAchievement} onClose={clearAchievement} />
     </div>
   );
 }
