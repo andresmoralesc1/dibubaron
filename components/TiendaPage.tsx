@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
 import Breadcrumbs from './Breadcrumbs';
+import MainLayout from './MainLayout';
 import { FiX } from 'react-icons/fi';
 
 interface Product {
@@ -89,8 +90,9 @@ export default function TiendaPage() {
   const regularProducts = filteredProducts.filter(p => !p.featured);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-primary-50/30 to-fun-yellow/10 dark:from-gray-900 dark:via-gray-900 dark:to-primary-900/20">
-      <div className="container-custom py-8">
+    <MainLayout>
+      <div className="bg-gradient-to-b from-white via-primary-50/30 to-fun-yellow/10 dark:from-gray-900 dark:via-gray-900 dark:to-primary-900/20 py-8">
+        <div className="container-custom">
         <Breadcrumbs
           items={[
             { label: 'Inicio', href: '/' },
@@ -239,7 +241,8 @@ export default function TiendaPage() {
             )}
           </>
         )}
+        </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }

@@ -1,28 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import CategoryCard from '@/components/CategoryCard';
-import SearchModal from '@/components/SearchModal';
+import MainLayout from '@/components/MainLayout';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { categories } from '@/lib/categories';
-import { useDarkMode } from '@/lib/contexts';
 import { motion } from 'framer-motion';
 
 export default function CategoriasPage() {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const { darkMode, toggleDarkMode } = useDarkMode();
-
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">
-      <Header
-        onSearchClick={() => setSearchOpen(true)}
-        darkMode={darkMode}
-        onToggleDarkMode={toggleDarkMode}
-      />
-
-      <main className="flex-grow">
+    <MainLayout>
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-fun-yellow via-fun-orange via-fun-pink to-fun-purple text-white py-16 md:py-20">
           <div className="container mx-auto px-4">
@@ -139,10 +125,6 @@ export default function CategoriasPage() {
             </div>
           </div>
         </section>
-      </main>
-
-      <Footer />
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-    </div>
+    </MainLayout>
   );
 }

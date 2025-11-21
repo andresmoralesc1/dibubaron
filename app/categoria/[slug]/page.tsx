@@ -4,21 +4,16 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { categories } from '@/lib/categories';
 import { getDrawingsByCategory } from '@/lib/drawings';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import MainLayout from '@/components/MainLayout';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import DrawingCard from '@/components/DrawingCard';
 import ShareButtons from '@/components/ShareButtons';
-import SearchModal from '@/components/SearchModal';
-import { useDarkMode } from '@/lib/contexts';
 import { motion } from 'framer-motion';
 
 export default function CategoryPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const [searchOpen, setSearchOpen] = useState(false);
   const [filter, setFilter] = useState<'todos' | 'facil' | 'medio' | 'dificil'>('todos');
-  const { darkMode, toggleDarkMode } = useDarkMode();
 
   const category = categories.find(cat => cat.slug === slug);
   const allDrawings = category ? getDrawingsByCategory(category.id) : [];
@@ -29,28 +24,23 @@ export default function CategoryPage() {
 
   if (!category) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-            Categoría no encontrada
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            La categoría que buscas no existe
-          </p>
+      <MainLayout>
+        <div className="min-h-[50vh] flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+              Categoría no encontrada
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              La categoría que buscas no existe
+            </p>
+          </div>
         </div>
-      </div>
+      </MainLayout>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">
-      <Header
-        onSearchClick={() => setSearchOpen(true)}
-        darkMode={darkMode}
-        onToggleDarkMode={toggleDarkMode}
-      />
-
-      <main className="flex-grow">
+    <MainLayout>
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-12">
           <div className="container mx-auto px-4">
@@ -163,10 +153,6 @@ export default function CategoryPage() {
             </div>
           )}
         </section>
-      </main>
-
-      <Footer />
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-    </div>
+    </MainLayout>
   );
 }

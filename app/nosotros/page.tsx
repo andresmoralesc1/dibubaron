@@ -1,26 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import SearchModal from '@/components/SearchModal';
-import { useDarkMode } from '@/lib/contexts';
+import MainLayout from '@/components/MainLayout';
 import { motion } from 'framer-motion';
 import { FiHeart, FiUsers, FiTarget } from 'react-icons/fi';
 
 export default function AboutPage() {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const { darkMode, toggleDarkMode } = useDarkMode();
-
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">
-      <Header
-        onSearchClick={() => setSearchOpen(true)}
-        darkMode={darkMode}
-        onToggleDarkMode={toggleDarkMode}
-      />
-
-      <main className="flex-grow">
+    <MainLayout>
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-primary-500 to-primary-600 text-white py-16">
           <div className="container mx-auto px-4 text-center">
@@ -146,10 +132,6 @@ export default function AboutPage() {
             </motion.div>
           </div>
         </section>
-      </main>
-
-      <Footer />
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-    </div>
+    </MainLayout>
   );
 }

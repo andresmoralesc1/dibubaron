@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import VideoCard from '@/components/VideoCard';
-import ScrollIndicator from '@/components/ScrollIndicator';
+import MainLayout from '@/components/MainLayout';
 import type { YouTubeVideo } from '@/types/video';
 
 const VIDEOS_PER_PAGE = 20;
@@ -92,9 +92,10 @@ export default function TutorialesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 py-16 text-white">
+    <MainLayout showScrollIndicator={true}>
+      <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 py-16 text-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -247,9 +248,8 @@ export default function TutorialesPage() {
             </a>
           </motion.div>
         </div>
+        </div>
       </div>
-
-      <ScrollIndicator />
-    </div>
+    </MainLayout>
   );
 }

@@ -1,24 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Header from './Header';
-import Footer from './Footer';
 import CategoryCard from './CategoryCard';
 import VideoCard from './VideoCard';
-import SearchModal from './SearchModal';
-import MascotGuide from './MascotGuide';
+import MainLayout from './MainLayout';
 import VideoSection from './VideoSection';
-import ScrollIndicator from './ScrollIndicator';
 import { categories } from '@/lib/categories';
-import { useDarkMode } from '@/lib/contexts';
 import { motion } from 'framer-motion';
 import { playSuccessSound } from '@/lib/sounds';
 import { fireCornerConfetti, fireEmojiRain } from '@/lib/confetti';
 import type { YouTubeVideo } from '@/types/video';
 
 export default function HomePage() {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const { darkMode, toggleDarkMode } = useDarkMode();
   const [topVideos, setTopVideos] = useState<YouTubeVideo[]>([]);
   const [loadingVideos, setLoadingVideos] = useState(true);
 
@@ -53,15 +46,8 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors">
-      <Header
-        onSearchClick={() => setSearchOpen(true)}
-        darkMode={darkMode}
-        onToggleDarkMode={toggleDarkMode}
-      />
-
-      <main className="flex-grow">
-        {/* Top YouTube Videos Section - Hero */}
+    <MainLayout>
+      {/* Top YouTube Videos Section - Hero */}
         <section className="w-full bg-gradient-to-b from-gray-100 via-gray-50 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -285,13 +271,6 @@ export default function HomePage() {
             </motion.div>
           </div>
         </section>
-      </main>
-
-      <Footer />
-
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-      <MascotGuide />
-      <ScrollIndicator />
-    </div>
+    </MainLayout>
   );
 }
