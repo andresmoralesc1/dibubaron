@@ -41,6 +41,21 @@ export const viewport: Viewport = {
   ],
 };
 
+// Script para evitar flash de modo claro/oscuro
+const themeScript = `
+  (function() {
+    try {
+      var stored = localStorage.getItem('darkMode');
+      var isDark = stored !== null
+        ? stored === 'true'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,6 +63,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${fredoka.variable} ${fredoka.className} antialiased`}
       >

@@ -7,6 +7,21 @@
   --foreground: #3a3a3a;
 }
 
+.dark {
+  --background: #111827;
+  --foreground: #f3f4f6;
+}
+
+/* Prevenir flash de modo claro al cargar */
+html {
+  background-color: var(--background);
+}
+
+.dark body {
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
 /* Tamaño base más grande para niños */
 html {
   font-size: 18px; /* Base 18px vs 16px estándar */

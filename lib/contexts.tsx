@@ -10,15 +10,50 @@ interface DarkModeContextType {
 
 const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
 
+// Función para obtener el modo inicial
+function getInitialDarkMode(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  // Primero verificar localStorage
+  const stored = localStorage.getItem('darkMode');
+  if (stored !== null) {
+    return stored === 'true';
+  }
+
+  // Si no hay preferencia guardada, usar preferencia del sistema
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
 export function DarkModeProvider({ children }: { children: ReactNode }) {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(isDark);
-    if (isDark) {
+    const initialMode = getInitialDarkMode();
+    setDarkMode(initialMode);
+
+    // Aplicar la clase inmediatamente
+    if (initialMode) {
       document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
+
+    // Escuchar cambios en la preferencia del sistema
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      // Solo cambiar automáticamente si no hay preferencia guardada
+      if (localStorage.getItem('darkMode') === null) {
+        setDarkMode(e.matches);
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const toggleDarkMode = () => {
