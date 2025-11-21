@@ -12,20 +12,41 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "DibuBaron - Aprende a dibujar fácil y paso a paso",
+  metadataBase: new URL('https://www.dibubaron.com'),
+  title: {
+    default: "DibuBaron - Aprende a dibujar fácil y paso a paso",
+    template: "%s | DibuBaron"
+  },
   description: "Descubre cientos de tutoriales de dibujo gratuitos organizados por categorías. Aprende a dibujar animales, personajes, vehículos y mucho más paso a paso.",
-  keywords: "dibujos, tutoriales, aprender a dibujar, dibujos paso a paso, dibujos para niños",
+  keywords: "dibujos, tutoriales, aprender a dibujar, dibujos paso a paso, dibujos para niños, dibujos fáciles, cómo dibujar",
   authors: [{ name: "DibuBaron" }],
+  creator: "DibuBaron",
+  publisher: "DibuBaron",
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "DibuBaron - Aprende a dibujar fácil y paso a paso",
     description: "Descubre cientos de tutoriales de dibujo gratuitos organizados por categorías",
+    url: "https://www.dibubaron.com",
+    siteName: "DibuBaron",
     type: "website",
     locale: "es_ES",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "DibuBaron - Aprende a dibujar",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "DibuBaron - Aprende a dibujar fácil y paso a paso",
     description: "Descubre cientos de tutoriales de dibujo gratuitos organizados por categorías",
+    images: ["/og-image.jpg"],
   },
 };
 
