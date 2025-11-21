@@ -145,3 +145,4 @@ Consulta la [documentación de deployment de Next.js](https://nextjs.org/docs/ap
 ## Licencia
 
 © 2025 DibuBaron. Todos los derechos reservados.
+
