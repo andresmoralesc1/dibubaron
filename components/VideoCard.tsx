@@ -34,14 +34,14 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
 
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-lg transition-all hover:shadow-2xl ${
+      className={`group relative overflow-hidden rounded-3xl bg-white dark:bg-gray-800 shadow-xl transition-all hover:shadow-2xl ${
         featured ? 'col-span-2 row-span-2' : ''
       }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={{ y: -12, scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       onTouchStart={() => setIsHovered(true)}
@@ -102,23 +102,23 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
 
           {/* Badge de Categoría */}
           {video.category && video.category !== 'Otros' && (
-            <div className="absolute left-3 top-3 rounded-full bg-purple-600 px-3 py-1 text-xs font-semibold text-white shadow-md">
+            <div className="absolute left-3 top-3 rounded-full bg-gradient-to-r from-fun-purple to-fun-pink px-3 py-1.5 text-xs font-bold text-white shadow-lg">
               {video.category}
             </div>
           )}
 
           {/* Badge de Destacado */}
           {video.featured && (
-            <div className="absolute right-3 top-3 rounded-full bg-yellow-500 px-3 py-1 text-xs font-semibold text-white shadow-md">
-              ⭐ Destacado
+            <div className="absolute right-3 top-3 rounded-full bg-gradient-to-r from-fun-yellow to-fun-orange px-3 py-1.5 text-xs font-bold text-white shadow-lg flex items-center gap-1">
+              <span>⭐</span> Destacado
             </div>
           )}
         </div>
 
         {/* Contenido */}
-        <div className="p-4">
+        <div className="p-5">
           <h3
-            className={`font-bold text-gray-900 dark:text-gray-100 line-clamp-2 ${
+            className={`font-bold text-gray-800 dark:text-gray-100 line-clamp-2 group-hover:text-fun-purple transition-colors ${
               featured ? 'text-xl md:text-2xl' : 'text-base md:text-lg'
             }`}
           >
@@ -177,7 +177,7 @@ export default function VideoCard({ video, featured = false }: VideoCardProps) {
 
           {/* Hover: Call to Action */}
           <motion.div
-            className="mt-3 flex items-center text-sm font-semibold text-purple-600 dark:text-purple-400"
+            className="mt-3 flex items-center text-sm font-bold text-fun-purple dark:text-fun-pink"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
             transition={{ duration: 0.2 }}

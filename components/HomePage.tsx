@@ -5,6 +5,7 @@ import CategoryCard from './CategoryCard';
 import VideoCard from './VideoCard';
 import MainLayout from './MainLayout';
 import VideoSection from './VideoSection';
+import Button from './ui/Button';
 import { categories } from '@/lib/categories';
 import { motion } from 'framer-motion';
 import { playSuccessSound } from '@/lib/sounds';
@@ -100,21 +101,19 @@ export default function HomePage() {
               transition={{ delay: 0.3 }}
               className="text-center"
             >
-              <a
+              <Button
+                variant="youtube"
+                size="lg"
                 href="https://www.youtube.com/@DibuBaron?sub_confirmation=1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-extrabold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                external
+                icon={
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                }
               >
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                </svg>
                 ¡Suscríbete a nuestro canal!
-              </a>
+              </Button>
             </motion.div>
           </div>
         </section>
@@ -123,13 +122,14 @@ export default function HomePage() {
         <VideoSection />
 
         {/* All Categories Section */}
-        <section className="bg-gray-light dark:bg-gray-800 py-12">
+        <section className="bg-gradient-to-r from-fun-yellow/10 via-fun-pink/10 to-fun-purple/10 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-dark dark:text-gray-200 mb-3">
+              <span className="text-5xl mb-4 inline-block">🎨</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-3">
                 Todas las Categorías
               </h2>
-              <p className="text-dark-light dark:text-gray-400 text-lg">
+              <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
                 Elige una categoría y comienza a dibujar
               </p>
             </div>

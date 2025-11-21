@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import VideoCard from '@/components/VideoCard';
 import MainLayout from '@/components/MainLayout';
+import HeroSection from '@/components/ui/HeroSection';
+import Button from '@/components/ui/Button';
 import type { YouTubeVideo } from '@/types/video';
 
 const VIDEOS_PER_PAGE = 20;
@@ -94,25 +96,16 @@ export default function TutorialesPage() {
   return (
     <MainLayout showScrollIndicator={true}>
       <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 py-16 text-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <span className="text-6xl mb-4 inline-block">🎬</span>
-            <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl drop-shadow-lg">
-              🎨 Tutoriales de Dibujo en Video
-            </h1>
-            <p className="mx-auto max-w-2xl text-lg md:text-xl font-semibold drop-shadow-md">
-              Aprende a dibujar paso a paso con nuestros videos. ¡Descubre nuevos tutoriales cada semana!
-            </p>
-          </motion.div>
-        </div>
-      </div>
+        <HeroSection
+          title="Tutoriales de Dibujo en Video"
+          subtitle="Aprende a dibujar paso a paso con nuestros videos. ¡Descubre nuevos tutoriales cada semana!"
+          emoji="🎬"
+          gradient="purple"
+          breadcrumbs={[
+            { label: 'Inicio', href: '/' },
+            { label: 'Videos' }
+          ]}
+        />
 
       <div className="container mx-auto px-4 py-8">
         {/* Search Bar */}
@@ -217,7 +210,7 @@ export default function TutorialesPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-red-100 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 py-16 mt-12">
+      <div className="bg-gradient-to-r from-fun-yellow/10 via-fun-pink/10 to-fun-purple/10 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 py-16 mt-12">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -225,27 +218,25 @@ export default function TutorialesPage() {
             viewport={{ once: true }}
           >
             <span className="text-5xl mb-4 inline-block">📺</span>
-            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-gray-100">
+            <h2 className="mb-4 text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-gray-100">
               ¿Te gustaron los tutoriales?
             </h2>
-            <p className="mb-8 text-lg text-gray-700 dark:text-gray-300">
+            <p className="mb-8 text-lg text-gray-600 dark:text-gray-400">
               Suscríbete a nuestro canal de YouTube para no perderte ningún tutorial nuevo
             </p>
-            <a
+            <Button
+              variant="youtube"
+              size="lg"
               href="https://www.youtube.com/@DibuBaron?sub_confirmation=1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-red-600 px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-red-700 hover:shadow-xl"
+              external
+              icon={
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+              }
             >
-              <svg
-                className="h-6 w-6"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
               Suscribirse a DibuBaron
-            </a>
+            </Button>
           </motion.div>
         </div>
         </div>
