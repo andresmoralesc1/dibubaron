@@ -51,11 +51,11 @@ export default function Header({ onSearchClick, darkMode, onToggleDarkMode }: He
               className="relative w-12 h-12 flex-shrink-0"
             >
               <Image
-                src="/logo.svg"
+                src="/logo.jpg"
                 alt="DibuBaron Logo"
                 fill
                 sizes="48px"
-                className="object-contain"
+                className="object-contain rounded-full"
                 priority
               />
             </motion.div>
