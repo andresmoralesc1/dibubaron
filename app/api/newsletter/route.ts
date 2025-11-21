@@ -3,8 +3,9 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// Webhook URL de n8n para guardar en NocoDB
-const N8N_WEBHOOK_URL = process.env.N8N_NEWSLETTER_WEBHOOK || 'https://n8n.neuralflow.space/webhook/dibubaron-newsletter';
+// NocoDB Configuration
+const NOCODB_API_URL = process.env.NOCODB_NEWSLETTER_URL || 'https://db.neuralflow.space/api/v2/tables/dibubaron_newsletter/records';
+const NOCODB_API_TOKEN = process.env.NOCODB_API_TOKEN;
 
 export async function POST(request: Request) {
   try {
@@ -19,25 +20,44 @@ export async function POST(request: Request) {
       );
     }
 
-    // Enviar a n8n webhook para guardar en NocoDB
-    const webhookResponse = await fetch(N8N_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email.toLowerCase().trim(),
-        source: 'dibubaron-website',
-        subscribedAt: new Date().toISOString(),
-        ip: request.headers.get('x-forwarded-for') || 'unknown',
-        userAgent: request.headers.get('user-agent') || 'unknown',
-      }),
-    });
+    const cleanEmail = email.toLowerCase().trim();
 
-    if (!webhookResponse.ok) {
-      console.error('n8n webhook error:', await webhookResponse.text());
-      // Aún así respondemos éxito al usuario para no bloquear la UX
-      // El webhook puede estar temporalmente inaccesible
+    // Guardar directamente en NocoDB
+    if (NOCODB_API_TOKEN && NOCODB_API_TOKEN !== 'your_nocodb_token_here') {
+      const nocoResponse = await fetch(NOCODB_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xc-token': NOCODB_API_TOKEN,
+        },
+        body: JSON.stringify({
+          email: cleanEmail,
+          source: 'dibubaron-website',
+          subscribed_at: new Date().toISOString(),
+          ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+          user_agent: request.headers.get('user-agent')?.substring(0, 500) || 'unknown',
+        }),
+      });
+
+      if (!nocoResponse.ok) {
+        const errorText = await nocoResponse.text();
+        console.error('NocoDB error:', errorText);
+
+        // Si es error de duplicado, informar al usuario
+        if (errorText.includes('duplicate') || errorText.includes('unique')) {
+          return NextResponse.json(
+            { error: 'Este email ya está suscrito' },
+            { status: 400 }
+          );
+        }
+
+        return NextResponse.json(
+          { error: 'Error al guardar suscripción' },
+          { status: 500 }
+        );
+      }
+    } else {
+      console.warn('NocoDB token not configured, subscription not saved');
     }
 
     return NextResponse.json({
