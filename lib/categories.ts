@@ -117,4 +117,13 @@ export const categories: Category[] = [
     color: 'from-red-500 to-green-500',
     count: 75,
   },
+  {
+    id: '13',
+    title: 'Otros',
+    slug: 'otros',
+    image: '',
+    emoji: '🎨',
+    color: 'from-gray-400 to-gray-500',
+    count: 50,
+  },
 ];
